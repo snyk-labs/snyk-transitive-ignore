@@ -234,9 +234,9 @@ var snykTransitiveIgnore = function () { return __awaiter(void 0, void 0, void 0
                                         fs_1.writeFileSync(IGNORE_FILE, "  " + key + ":\n", { flag: 'a' });
                                         for (_i = 0, value_1 = value; _i < value_1.length; _i++) {
                                             item = value_1[_i];
-                                            fs_1.writeFileSync(IGNORE_FILE, "    - '" + item + "':\n", { flag: 'a' });
+                                            fs_1.writeFileSync(IGNORE_FILE, "    - " + item + ":\n", { flag: 'a' });
                                             fs_1.writeFileSync(IGNORE_FILE, "        reason: transitive ignore\n", { flag: 'a' });
-                                            fs_1.writeFileSync(IGNORE_FILE, "        expires: 2100-01-01\n", { flag: 'a' });
+                                            fs_1.writeFileSync(IGNORE_FILE, "        expires: \'2100-01-01\'\n", { flag: 'a' });
                                         }
                                     }
                                     return [2 /*return*/];

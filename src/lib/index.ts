@@ -127,7 +127,7 @@ const snykTransitiveIgnore = async () => {
         for (let item of value) {
            writeFileSync(IGNORE_FILE, "    - " + item + ":\n", {flag: 'a' } )
            writeFileSync(IGNORE_FILE, "        reason: transitive ignore\n", {flag: 'a'} )
-           writeFileSync(IGNORE_FILE, "        expires: '2100-01-01'\n", {flag: 'a'} )
+           writeFileSync(IGNORE_FILE, "        expires: \'2100-01-01\'\n", {flag: 'a'} )
         }
     }
   })   
