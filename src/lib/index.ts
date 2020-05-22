@@ -100,7 +100,7 @@ const snykTransitiveIgnore = async () => {
           ignoreRules.push(
               {
                 vulnId: vuln.id,
-                path: vuln.from[1]
+                path: vuln.from[0] + ' > ' + vuln.from[1]
               }
           )
       }
@@ -125,9 +125,9 @@ const snykTransitiveIgnore = async () => {
         let value = finalDict[key]
         writeFileSync(IGNORE_FILE, "  " + key + ":\n", { flag: 'a' })
         for (let item of value) {
-           writeFileSync(IGNORE_FILE, "    - '" + item + "':\n", {flag: 'a' } )
+           writeFileSync(IGNORE_FILE, "    - " + item + ":\n", {flag: 'a' } )
            writeFileSync(IGNORE_FILE, "        reason: transitive ignore\n", {flag: 'a'} )
-           writeFileSync(IGNORE_FILE, "        expires: 2100-01-01\n", {flag: 'a'} )
+           writeFileSync(IGNORE_FILE, "        expires: '2100-01-01'\n", {flag: 'a'} )
         }
     }
   })   

@@ -166,7 +166,7 @@ var snykTransitiveIgnore = function () { return __awaiter(void 0, void 0, void 0
                                         //await writeIgnoreEntry(vuln.id, vuln.from[1], "2100-01-01", "transitive ignore")
                                         ignoreRules.push({
                                             vulnId: vuln.id,
-                                            path: vuln.from[1]
+                                            path: vuln.from[0] + ' > ' + vuln.from[1]
                                         });
                                     }
                                     _h.label = 16;
