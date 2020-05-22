@@ -33,6 +33,7 @@
   ],
   "homepage": "https://github.com/snyk-tech-services/snyk-transitive-ignore#readme",
   "dependencies": {
+    "@babel/types": "^7.9.6",
     "@snyk/configstore": "^3.2.0-rc1",
     "axios": "^0.19.2",
     "debug": "^4.1.1",
