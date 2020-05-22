@@ -2,9 +2,10 @@ export {}
 
 import 'source-map-support/register'
 const args = require('minimist')(process.argv.slice(2))
-import { readFileSync } from 'fs';
-import { Stream } from 'stream';
+import { readFileSync, writeFileSync } from 'fs'
+import { Stream } from 'stream'
 
+const IGNORE_FILE = ".snyk_ignore"
 
 function readStream(stream: Stream, encoding = "utf8") {
     return new Promise((resolve, reject) => {
@@ -16,7 +17,42 @@ function readStream(stream: Stream, encoding = "utf8") {
     });
 }
 
-function checkIgnoreListMatch()
+function checkIgnoreListMatch(ignoreItems: string[], directDep: string) {
+    // check for two types of matches
+    // 1. when version is not specified in the ignore entry
+    // 2. when version is specified in the ignore entry
+
+    for (const ignoreItem of ignoreItems) {
+        // if ignoreItem contains an @ symbol, compare for equality to directDep
+        if (ignoreItem.includes('@')) {
+            if (ignoreItem == directDep) {
+                console.log(`${ignoreItem} matches ${directDep}`)
+                return true;
+            }
+        }
+        else {
+            if (directDep.startsWith(ignoreItem.concat('@'))) {
+                console.log(`${ignoreItem} matches ${directDep}`)
+                return true;
+            }
+        }
+        // if ignoreItem does not contain an @symbol, compare for startsWith match
+        // up to and including @ symbol (any version)
+    }
+}
+
+function writeIgnoreEntry(vuln: string, path: string, expires: string, reason: string) {
+    let writeString: string = "ignore:\n" +
+        "  " + vuln + ":\n" +
+        "    - '" + path + "':\n" + 
+        "        reason: " + reason + "\n" + 
+        "        expires: " + expires + "\n"
+    
+    
+    writeFileSync(IGNORE_FILE, writeString, { flag: 'a' })
+    
+}
+
 
 const snykTransitiveIgnore = async () => {
   var inputFile: string = ""
@@ -49,11 +85,13 @@ const snykTransitiveIgnore = async () => {
       }
       console.log(`full path ${fullPath}`)
       console.log(`is ${vuln.from[1]} in ignore list?`)
-      checkIgnoreListMatch(ignoreStrings, vuln.from[1])
+      if (checkIgnoreListMatch(ignoreStrings, vuln.from[1])) {
+          await writeIgnoreEntry(vuln.id, vuln.from[1], "2100-01-01", "transitive ignore")
+      }
+
     }
   })   
 }
-
 
 snykTransitiveIgnore()
 
