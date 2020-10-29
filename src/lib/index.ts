@@ -143,18 +143,18 @@ async function snykTransitiveIgnore() {
     for await (const ignoreRule of ignoreRules) {
         debug(ignoreRule.vulnId)  
         debug(ignoreRule.path)
-        if (issuesToIgnore[ignoreRule.vulnId] != [ignoreRule.path]) {
-            if (!issuesToIgnore[ignoreRule.vulnId]) {
-                issuesToIgnore[ignoreRule.vulnId] = [ignoreRule.path]
+        if (issuesToIgnore[ignoreRule.vulnId]) {
+            if (!issuesToIgnore[ignoreRule.vulnId].includes(ignoreRule.path)) {
+                issuesToIgnore[ignoreRule.vulnId].push(ignoreRule.path)
             }
         }
         else {
-            issuesToIgnore[ignoreRule.vulnId].push(ignoreRule.path)
+            issuesToIgnore[ignoreRule.vulnId] = [ignoreRule.path]
         }
     }
     console.log('issues to ignore:')
     console.log(issuesToIgnore)
-    // loop through finalDict and write ignore Entries
+    // loop through issuesToIgnore and write ignore Entries
     writeFileSync(IGNORE_FILE, "ignore:\n")
     for (let key in issuesToIgnore) {
         let value = issuesToIgnore[key]
