@@ -2,8 +2,8 @@
   "compilerOptions": {
     "outDir": "./dist",
     "pretty": true,
-    "target": "es2017",
-    "module": "esnext",
+    "target": "esnext",
+    "module": "commonjs",
     "sourceMap": true,
     "declaration": true,
     "importHelpers": true,

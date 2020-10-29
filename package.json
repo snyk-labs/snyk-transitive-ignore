@@ -1,5 +1,6 @@
 {
   "name": "snyk-transitive-ignore",
+  "version": "0.5.0",
   "description": "ignore vulns brough by transitive dependencies for specified direct dependencies",
   "main": "dist/index.js",
   "scripts": {
@@ -17,6 +18,9 @@
     "snyk-test": "snyk test",
     "pkg-binaries": "npx pkg . -t node12-linux-x64,node12-macos-x64,node12-win-x64 --out-path ./dist/binaries"
   },
+  "bin": {
+    "snyk-transitive-ignore": "./src/lib/index.js"
+  },
   "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -33,12 +37,8 @@
   ],
   "homepage": "https://github.com/snyk-tech-services/snyk-transitive-ignore#readme",
   "dependencies": {
-    "@babel/types": "^7.9.6",
-    "@snyk/configstore": "^3.2.0-rc1",
-    "axios": "^0.19.2",
     "debug": "^4.1.1",
-    "lodash": "^4.17.15",
-    "snyk-config": "^3.0.0",
+    "minimist": "^1.2.5",
     "snyk-request-manager": "^1.0.0",
     "source-map-support": "^0.5.16"
   },
@@ -46,7 +46,6 @@
     "@types/jest": "^25.1.1",
     "@types/lodash": "^4.14.149",
     "@types/node": "^12.12.42",
-    "@types/yargs": "^15.0.5",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "eslint": "^6.8.0",
@@ -54,7 +53,6 @@
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "ts-jest": "^25.1.0",
-    "ts-node": "8.6.2",
     "tsc-watch": "^4.1.0",
     "tslib": "^1.13.0",
     "typescript": "^3.7.5"
