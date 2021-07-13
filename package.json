@@ -37,7 +37,7 @@
   ],
   "homepage": "https://github.com/snyk-tech-services/snyk-transitive-ignore#readme",
   "dependencies": {
-    "base64url": "^1.0.6",
+    "base64url": "^3.0.0",
     "debug": "^4.1.1",
     "minimist": "^1.2.5",
     "snyk-request-manager": "^1.0.0",
