@@ -19,7 +19,7 @@
     "pkg-binaries": "npx pkg . -t node12-linux-x64,node12-macos-x64,node12-win-x64 --out-path ./dist/binaries"
   },
   "bin": {
-    "snyk-transitive-ignore": "./src/lib/index.js"
+    "snyk-transitive-ignore": "./dist/index.js"
   },
   "types": "./dist/index.d.ts",
   "repository": {

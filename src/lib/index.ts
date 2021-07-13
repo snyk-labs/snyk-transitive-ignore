@@ -5,6 +5,7 @@ const args = require('minimist')(process.argv.slice(2))
 import { readFileSync, writeFileSync } from 'fs'
 import { Stream } from 'stream'
 import * as debugLib from 'debug'
+import { debugPort } from 'process';
 
 const debug = debugLib('snyk:index');
 
@@ -87,11 +88,12 @@ async function snykTransitiveIgnore() {
   }
 
   if (args.l && typeof args.l !== 'boolean') {
+      debug(`setting nestingLevel to ${args.l}`)
     nestingLevel = args.l;
     //console.log(ignoreStrings);
   }
 
-  
+  debug(`nesting level -> ${nestingLevel}`)
   await readStream(process.stdin).then(async function(data){
     const issues: any = JSON.parse(String(data))
     for await (const vuln of issues.vulnerabilities) {
