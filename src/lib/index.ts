@@ -46,6 +46,13 @@ function checkIgnoreListMatch(ignoreItems: string[], directDep: string) {
             // up to and including @ symbol (any version)
             else {
                 debug('ignore does not include version')
+                if (ignoreItem.includes('*') && !ignoreItem.startsWith('*')) {
+                    debug('ignore includes *');
+                    if (directDep.startsWith(ignoreItem.slice(0, -1))) {
+                        debug(`${ignoreItem} matches ${directDep}`);
+                        return true;
+                    }
+                }
                 if (directDep.startsWith(ignoreItem.concat('@'))) {
                     debug(`${ignoreItem} matches ${directDep}`)
                     return true;
@@ -118,6 +125,7 @@ async function snykTransitiveIgnore() {
           //await writeIgnoreEntry(vuln.id, vuln.from[1], "2100-01-01", "transitive ignore")
           if (nestingLevel > 1) {
               //build ignore path
+              ignorePath = "" 
               var i: number =1
               while (i < nestingLevel) {
                 ignorePath = ignorePath + vuln.from[i] + " > " + vuln.from[i+1]
