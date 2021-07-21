@@ -30,7 +30,12 @@ function checkIgnoreListMatch(ignoreItems: string[], directDep: string) {
     // check for two types of matches
     // 1. when version is not specified in the ignore entry
     // 2. when version is specified in the ignore entry
-
+    
+    //in case the level looking is higher than the level of the dep on loop
+    if ( typeof directDep == 'undefined' )  {
+        debug ('this path does not have sufficient nesting levels')
+        return false
+    }
     for (const ignoreItem of ignoreItems) {
         if (ignoreItem.length > 0) { 
             debug('ignore item: ' + ignoreItem)
