@@ -75,7 +75,6 @@ function writeIgnoreEntry(vuln: string, path: string, expires: string, reason: s
     
 }
 
-
 async function snykTransitiveIgnore() {
   var inputFile: string = ""
   var fullPath: string = ""
@@ -101,53 +100,63 @@ async function snykTransitiveIgnore() {
   }
 
   debug(`nesting level -> ${nestingLevel}`)
+  let projects: any = []
   await readStream(process.stdin).then(async function(data){
-    const issues: any = JSON.parse(String(data))
-    for await (const vuln of issues.vulnerabilities) {
-      fullPath = ""
-      
-
-      debug(`vuln id ${vuln.id}`)
-      debug(`from direct dep ${vuln.from[nestingLevel]}`)
-
-      for await(const from of vuln.from) {
-          if (fullPath != "") {
-            fullPath += ` > ${from}`
-          }
-          else {
-              fullPath = `${from}`
-          }
+    if ((String(data)).startsWith('[')) {
+      debug('-all-projects output detected')
+      projects = JSON.parse(String(data))
+    } else {
+      debug('single project output detected')
+      projects.push(JSON.parse(String(data)))
+    }  
+    
+    for await (const project of projects) {
+      for await (const vuln of project.vulnerabilities) {
+        fullPath = ""
+        
+  
+        debug(`vuln id ${vuln.id}`)
+        debug(`from direct dep ${vuln.from[nestingLevel]}`)
+  
+        for await(const from of vuln.from) {
+            if (fullPath != "") {
+              fullPath += ` > ${from}`
+            }
+            else {
+                fullPath = `${from}`
+            }
+        }
+        debug(`full path ${fullPath}`)
+        debug(`is ${vuln.from[nestingLevel]} in ignore list?`)
+        if (checkIgnoreListMatch(ignoreStrings, vuln.from[nestingLevel])) {
+            debug('checkIgnore: true')
+            //await writeIgnoreEntry(vuln.id, vuln.from[1], "2100-01-01", "transitive ignore")
+            if (nestingLevel > 1) {
+                //build ignore path
+                ignorePath = "" 
+                var i: number =1
+                while (i < nestingLevel) {
+                  ignorePath = ignorePath + vuln.from[i] + " > " + vuln.from[i+1]
+                  i++
+                }
+            }
+            else { ignorePath = vuln.from[1] }
+            ignoreRules.push(
+                {
+                  vulnId: vuln.id,
+                  //path: vuln.from[nestingLevel]
+                  path: ignorePath
+                }
+            )
+        }
+  
       }
-      debug(`full path ${fullPath}`)
-      debug(`is ${vuln.from[nestingLevel]} in ignore list?`)
-      if (checkIgnoreListMatch(ignoreStrings, vuln.from[nestingLevel])) {
-          debug('checkIgnore -> true')
-          //await writeIgnoreEntry(vuln.id, vuln.from[1], "2100-01-01", "transitive ignore")
-          if (nestingLevel > 1) {
-              //build ignore path
-              ignorePath = "" 
-              var i: number =1
-              while (i < nestingLevel) {
-                ignorePath = ignorePath + vuln.from[i] + " > " + vuln.from[i+1]
-                i++
-              }
-          }
-          else { ignorePath = vuln.from[1] }
-          ignoreRules.push(
-              {
-                vulnId: vuln.id,
-                //path: vuln.from[nestingLevel]
-                path: ignorePath
-              }
-          )
-      }
-
     }
     //console.log('ignore rules: ' + ignoreRules)
 
     interface IssueDictionary {
         [index: string]: string[];
-   }
+    }
    var issuesToIgnore = {} as IssueDictionary;
    
     for await (const ignoreRule of ignoreRules) {
@@ -179,4 +188,3 @@ async function snykTransitiveIgnore() {
 }
 
 snykTransitiveIgnore()
-
