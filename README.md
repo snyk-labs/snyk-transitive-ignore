@@ -10,8 +10,8 @@ clone this repo, and then run `npm install -g`
 2. run `snyk test --json | snyk-transitive-ignore -f packages-to-ignore.list` to generate the ignore list dynamically (into `.snyk_ignore` file)
 3. run `snyk test --policy-path=.snyk_ignore` to test again with the Snyk ignore policy in place
 
-## ignore-list
+## ignore-list syntax
 Package names can be:
-1 - full name and version ( example: mongoose@5.7.5)
-2 - Only package name ( example: mongoose)
-3 - Begining of package name ( example: mong*)
+1. Full name and version ( example: mongoose@5.7.5)
+2. Only package name ( example: mongoose)
+3. Begining of package name ( example: mong*)
