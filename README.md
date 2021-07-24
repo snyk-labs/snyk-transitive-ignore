@@ -1,4 +1,4 @@
-[![Known Vulnerabilities](https://snyk.io/test/github/snyk-tech-services/snyk-transitive-ignore/badge.svg?targetFile=package.json)](https://snyk.io/test/github/snyk-tech-services/snyk-filter?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/snyk-tech-services/snyk-transitive-ignore/badge.svg?targetFile=package.json)](https://snyk.io/test/github/snyk-tech-services/snyk-transitive-ignore?targetFile=package.json)
 
 ## snyk-transitive-ignore
 proof of concept to ignore all issues (direct or transitive) brought by a particular dependency
