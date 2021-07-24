@@ -6,8 +6,7 @@
   "scripts": {
     "format:check": "prettier --check '{''{lib,test}/!(fixtures)/**/*,*}.{js,ts,json,yml}'",
     "format": "prettier --write '{''{lib,test}/!(fixtures)/**/*,*}.{js,ts,json,yml}'",
-    "lint": "npm run format:check && npm run lint:eslint",
-    "lint:eslint": "eslint --cache '{lib,test}/**/*.ts'",
+    "lint": "npm run format:check",
     "test": "npm run lint && npm run test:unit",
     "test:unit": "jest",
     "test:coverage": "npm run test:unit -- --coverage",
@@ -49,8 +48,6 @@
     "@types/node": "^12.12.42",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "ts-jest": "^25.1.0",
