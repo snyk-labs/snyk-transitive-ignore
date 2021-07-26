@@ -1,11 +1,8 @@
-//export {}
-
-//import 'source-map-support/register'
 const args = require('minimist')(process.argv.slice(2))
-import { readFileSync, writeFileSync } from 'fs'
+import { fstat, readFileSync, writeFileSync } from 'fs'
 import { Stream } from 'stream'
 import * as debugLib from 'debug'
-import { debugPort } from 'process';
+import { debugPort, exit } from 'process';
 
 const debug = debugLib('snyk:index');
 
@@ -26,7 +23,7 @@ function readStream(stream: Stream, encoding = "utf8") {
     });
 }
 
-function checkIgnoreListMatch(ignoreItems: string[], directDep: string) {
+export function checkIgnoreListMatch(ignoreItems: string[], directDep: string) {
     // check for two types of matches
     // 1. when version is not specified in the ignore entry
     // 2. when version is specified in the ignore entry
