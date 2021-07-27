@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const args = require('minimist')(process.argv.slice(2))
 import { fstat, readFileSync, writeFileSync } from 'fs'
 import { Stream } from 'stream'
