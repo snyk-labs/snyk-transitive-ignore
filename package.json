@@ -39,7 +39,7 @@
     "base64url": "^3.0.0",
     "debug": "^4.1.1",
     "minimist": "^1.2.5",
-    "snyk-request-manager": "^1.0.0",
+    "snyk-request-manager": "^1.4.2",
     "source-map-support": "^0.5.16"
   },
   "devDependencies": {
