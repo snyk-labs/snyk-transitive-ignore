@@ -36,14 +36,12 @@
   ],
   "homepage": "https://github.com/snyk-tech-services/snyk-transitive-ignore#readme",
   "dependencies": {
-    "base64url": "^3.0.0",
     "debug": "^4.1.1",
-    "minimist": "^1.2.5",
-    "snyk-request-manager": "^1.0.0",
-    "source-map-support": "^0.5.16"
+    "minimist": "^1.2.5"
   },
   "devDependencies": {
     "@semantic-release/exec": "^5.0.0",
+    "@types/debug": "^4.1.7",
     "@types/jest": "^25.1.1",
     "@types/lodash": "^4.14.149",
     "@types/node": "^12.12.42",
@@ -60,8 +58,11 @@
   },
   "pkg": {
     "scripts": [
-      "dist/**/*.js"
+      "dist/*.js"
     ]
+  },
+  "bin": {
+    "snyk-transitive-ignore": "./dist/index.js"
   },
   "release": {
     "branches": [
