@@ -37,7 +37,7 @@
   "homepage": "https://github.com/snyk-tech-services/snyk-transitive-ignore#readme",
   "dependencies": {
     "debug": "^4.1.1",
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.6"
   },
   "devDependencies": {
     "@semantic-release/exec": "^5.0.0",
