@@ -1,23 +1,28 @@
 version: 2.1
 orbs:
-    snyk: snyk/snyk@0.0.8
+    snyk: snyk/snyk@2.3.0
 jobs:
     build-test-publish:
         docker:
-            - image: circleci/node:latest
+            - image: cimg/node:24.22
         steps:
             - checkout
-            - run: npm install semantic-release @semantic-release/exec pkg --save-dev
+            - run: npm install semantic-release@25.0.9 @semantic-release/exec@7.1.0 --save-dev
             - run: npm install
             - run: npm test
             - snyk/scan:
                 fail-on-issues: true
                 monitor-on-build: true
+                severity-threshold: high
                 token-variable: SNYK_TOKEN
-            - run: npx semantic-release
+            - run:
+                name: Publish to npm with OIDC
+                command: |
+                    export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+                    npx semantic-release@25.0.9
     build-test:
         docker:
-            - image: circleci/node:latest
+            - image: cimg/node:24.22
         steps:
             - checkout
             - run: npm install
@@ -25,11 +30,12 @@ jobs:
             - snyk/scan:
                 fail-on-issues: true
                 monitor-on-build: false
+                severity-threshold: high
                 token-variable: SNYK_TOKEN
             - run: npx tsc
     build-test-from-fork:
         docker:
-            - image: circleci/node:latest
+            - image: cimg/node:24.22
         steps:
             - checkout
             - run: npm install
@@ -38,18 +44,6 @@ jobs:
 
 workflows:
     version: 2.1
-    nightly:
-        triggers:
-          - schedule:
-              cron: "0 0 * * *"
-              filters:
-                branches:
-                  only:
-                    - master
-        jobs:
-            - build-test-publish:
-                context: SNYK
-
     build-test-publish:
         jobs:
             - build-test-publish:
